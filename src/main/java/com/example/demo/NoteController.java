@@ -16,11 +16,11 @@ public class NoteController {
     
     @GetMapping("api/check")
     @ResponseBody
-    public String checking() {
+    public String apiCheck() {
         return "Hello world";
     }
 
-    @PostMapping("note/{id}")
+    @PostMapping("/{id}")
     @ResponseBody
     public ResponseEntity<String> updateNote(@PathVariable String id, @RequestBody Map<String, String> payload) {
         String noteContent = payload.getOrDefault("note", "");
@@ -30,10 +30,21 @@ public class NoteController {
         return ResponseEntity.ok("Saved");
     }
 
-    @GetMapping("note/{id}")
+    @GetMapping("/{id}")
     public String getNote(@PathVariable String id, Model model) {
         NoteEntity note = noteRepository.findById(id).orElse(new NoteEntity(id, ""));
         model.addAttribute("note", note);
         return "note";
     }
+    
+    @GetMapping("/")
+    public String home() {
+        return "homepage";
+    }
+
+    @RequestMapping("/**")
+    public String redirectToHome() {
+        return "redirect:/";
+    }
+
 }
